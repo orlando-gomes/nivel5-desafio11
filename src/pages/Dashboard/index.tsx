@@ -63,35 +63,35 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function loadFoods(): Promise<void> {
       // Load Foods from API
-      let response: AxiosResponse<Food[]>;
-      // let response = await api.get('foods');
+      // let response: AxiosResponse<Food[]>;
 
-      interface Params {
-        category_like?: number;
-        name_like?: string;
-      }
+      // interface Params {
+      //   category_like?: number;
+      //   name_like?: string;
+      // }
 
-      const params: Params = {};
+      // const params: Params = {};
 
-      // let apiFoods = response.data as Food[];
+      // if (selectedCategory) {
+      //   params.category_like = selectedCategory;
+      // }
 
-      if (selectedCategory) {
-        // apiFoods = apiFoods.filter(food => food.category === selectedCategory);
-        params.category_like = selectedCategory;
-      }
+      // if (searchValue) {
+      //   params.name_like = searchValue;
+      // }
 
-      if (searchValue) {
-        // apiFoods = apiFoods.filter(
-        //   food => food.name.indexOf(searchValue) !== -1,
-        // );
-        params.name_like = searchValue;
-      }
+      // if (!searchValue && !selectedCategory) {
+      //   response = await api.get('foods');
+      // } else {
+      //   response = await api.get('foods', { params });
+      // }
 
-      if (!searchValue && !selectedCategory) {
-        response = await api.get('foods');
-      } else {
-        response = await api.get('foods', { params });
-      }
+      const response: AxiosResponse<Food[]> = await api.get('foods', {
+        params: {
+          category_like: selectedCategory,
+          name_like: searchValue,
+        },
+      });
 
       const apiFoods = response.data.map(food => {
         return {
@@ -99,13 +99,6 @@ const Dashboard: React.FC = () => {
           formattedPrice: formatValue(food.price),
         };
       });
-
-      // apiFoods = apiFoods.map(food => {
-      //   return {
-      //     ...food,
-      //     formattedPrice: formatValue(food.price),
-      //   };
-      // });
 
       setFoods(apiFoods);
     }
